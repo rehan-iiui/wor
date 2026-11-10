@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkSpace</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --text:#f6f7ff;
+  --muted:#b8c1d8;
+  --glass:rgba(255,255,255,.10);
+  --line:rgba(255,255,255,.18);
+}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(at 15% 10%,#506cba 0%,transparent 40%),
+    radial-gradient(at 85% 20%,#7652a5 0%,transparent 40%),
+    linear-gradient(135deg,#111a32,#202746,#11182b);
+  background-attachment:fixed;
+}
+.app{
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:20px;
+  max-width:1450px;
+  margin:auto;
+  padding:22px;
+}
+.glass{
+  background:var(--glass);
+  border:1px solid var(--line);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  box-shadow:0 20px 60px #0003;
+}
+.sidebar{
+  border-radius:28px;
+  padding:22px 15px;
+  min-height:calc(100vh - 44px);
+}
+.brand{
+  font-size:22px;
+  font-weight:800;
+  padding:10px;
+  margin-bottom:25px;
+}
+.logo{
+  display:inline-grid;
+  place-items:center;
+  width:35px;
+  height:35px;
+  border-radius:12px;
+  color:#17213a;
+  background:linear-gradient(135deg,#a8c8ff,#c9a7ff);
+}
+.label{
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:2px;
+  margin:20px 10px 10px;
+}
+.nav button{
+  display:block;
+  width:100%;
+  border:0;
+  padding:13px;
+  margin:5px 0;
+  text-align:left;
+  border-radius:13px;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:14px;
+}
+.nav button:hover,.nav button.active{
+  background:rgba(255,255,255,.15);
+  color:white;
+}
+main{min-width:0}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+  gap:10px;
+}
+.search{
+  padding:11px 15px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:var(--glass);
+  color:white;
+  width:230px;
+  outline:none;
+}
+.search::placeholder{color:var(--muted)}
+.icon-btn{
+  padding:11px 14px;
+  border-radius:13px;
+  border:1px solid var(--line);
+  color:white;
+  background:var(--glass);
+  cursor:pointer;
+}
+h1{
+  font-size:36px;
+  letter-spacing:-1px;
+  margin-bottom:8px;
+}
+.muted{color:var(--muted);font-size:13px}
+.welcome{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:22px;
+  gap:12px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:18px;
+}
+.card{
+  border:1px solid var(--line);
+  background:var(--glass);
+  backdrop-filter:blur(22px);
+  border-radius:22px;
+  padding:19px;
+  box-shadow:0 12px 35px #0002;
+}
+.stat-name{color:var(--muted);font-size:12px}
+.stat-number{font-size:30px;font-weight:750;margin:12px 0}
+.layout{
+  display:grid;
+  grid-template-columns:1.4fr .9fr;
+  gap:16px;
+}
+.heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:17px;
+}
+h2{font-size:17px;margin:0}
+.primary{
+  border:0;
+  border-radius:12px;
+  padding:10px 14px;
+  background:linear-gradient(135deg,#b8d3ff,#d1b8ff);
+  color:#17213a;
+  font-weight:750;
+  cursor:pointer;
+}
+.task{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px;
+  margin:9px 0;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#ffffff08;
+}
+.task input{accent-color:#a9c7ff}
+.task-name{flex:1;font-size:13px;overflow-wrap:anywhere}
+.task.done .task-name{
+  text-decoration:line-through;
+  opacity:.5;
+}
+.delete{
+  background:transparent;
+  border:0;
+  color:#ff9aab;
+  font-size:19px;
+  cursor:pointer;
+}
+.project{
+  padding:15px;
+  margin:10px 0;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#ffffff08;
+}
+.project-title{font-size:13px;font-weight:700}
+.progress-row{
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:11px;
+  margin:12px 0 7px;
+}
+.bar{
+  height:7px;
+  border-radius:20px;
+  background:#ffffff20;
+  overflow:hidden;
+}
+.bar span{
+  display:block;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#8ebaff,#c4a5ff);
+}
+.lower{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:16px;
+}
+textarea{
+  width:100%;
+  min-height:140px;
+  resize:vertical;
+  padding:13px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#ffffff09;
+  color:white;
+  outline:none;
+}
+textarea::placeholder{color:var(--muted)}
+dialog{
+  width:min(420px,90%);
+  border:1px solid #ffffff40;
+  border-radius:22px;
+  background:#25314e;
+  color:white;
+  padding:22px;
+}
+dialog::backdrop{background:#0009;backdrop-filter:blur(5px)}
+dialog input,dialog select{
+  width:100%;
+  padding:12px;
+  margin:9px 0 15px;
+  border-radius:10px;
+  border:1px solid #ffffff40;
+  background:#ffffff15;
+  color:white;
+}
+dialog select option{color:#222}
+.mobile-nav{display:none}
+@media(max-width:950px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .layout{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  .app{display:block;padding:12px 12px 85px}
+  .sidebar{display:none}
+  .topbar{margin-bottom:22px}
+  .search{width:min(180px,45vw)}
+  h1{font-size:29px}
+  .welcome{align-items:flex-start;flex-direction:column}
+  .lower{grid-template-columns:1fr}
+  .mobile-nav{
+    display:flex;
+    justify-content:space-around;
+    position:fixed;
+    bottom:10px;
+    left:10px;
+    right:10px;
+    padding:10px;
+    border-radius:20px;
+    background:#26334fdd;
+    backdrop-filter:blur(25px);
+    border:1px solid #ffffff40;
+    z-index:5;
+  }
+  .mobile-nav button{
+    background:transparent;
+    border:0;
+    color:white;
+    padding:8px;
+    cursor:pointer;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar glass">
+  <div class="brand"><span class="logo">✦</span> WorkSpace</div>
+  <div class="label">WORKSPACE</div>
+  <nav class="nav">
+    <button class="active" data-view="overview">⌂ Overview</button>
+    <button data-view="tasks">☑ My Tasks</button>
+    <button data-view="projects">▦ Projects</button>
+    <button data-view="notes">▤ Notes</button>
+  </nav>
+  <div class="label">PREFERENCES</div>
+  <nav class="nav">
+    <button id="themeSide">◐ Toggle Appearance</button>
+  </nav>
+</aside>
+
+<main>
+  <div class="topbar">
+    <span class="muted">Workspace / Overview</span>
+    <div>
+      <input class="search" id="search" placeholder="⌕ Search tasks...">
+      <button class="icon-btn" id="theme">◐</button>
+    </div>
+  </div>
+
+  <div class="welcome">
+    <div>
+      <h1 id="greeting">Good afternoon.</h1>
+      <p class="muted">A little progress each day adds up to big results.</p>
+    </div>
+    <span class="muted" id="date"></span>
+  </div>
+
+  <section class="stats">
+    <div class="card">
+      <div class="stat-name">Total Tasks</div>
+      <div class="stat-number" id="total">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-name">Completed</div>
+      <div class="stat-number" id="completed">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-name">In Progress</div>
+      <div class="stat-number" id="pending">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-name">Projects</div>
+      <div class="stat-number">3</div>
+    </div>
+  </section>
+
+  <section class="layout">
+    <div class="card" id="taskPanel">
+      <div class="heading">
+        <div>
+          <h2>My Tasks</h2>
+          <p class="muted">Keep your next steps moving.</p>
+        </div>
+        <button class="primary" id="add">＋ Add Task</button>
+      </div>
+      <div id="tasks"></div>
+      <p class="muted" id="summary"></p>
+    </div>
+
+    <div class="card" id="projectPanel">
+      <div class="heading"><h2>Projects</h2><span class="muted">3 active</span></div>
+      <div class="project">
+        <div class="project-title">🔵 Website Refresh</div>
+        <div class="progress-row"><span>Design and content</span><span>72%</span></div>
+        <div class="bar"><span style="width:72%"></span></div>
+      </div>
+      <div class="project">
+        <div class="project-title">🟣 Learning Hub</div>
+        <div class="progress-row"><span>Research and planning</span><span>45%</span></div>
+        <div class="bar"><span style="width:45%"></span></div>
+      </div>
+      <div class="project">
+        <div class="project-title">🟢 New Collection</div>
+        <div class="progress-row"><span>Early planning</span><span>24%</span></div>
+        <div class="bar"><span style="width:24%"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lower">
+    <div class="card" id="notePanel">
+      <div class="heading"><h2>Quick Notes</h2><span>✎</span></div>
+      <textarea id="notes" placeholder="Write an idea or reminder..."></textarea>
+      <p class="muted">Your notes save automatically on this device.</p>
+    </div>
+    <div class="card">
+      <h2>Daily Focus ✧</h2>
+      <p class="muted">Choose one important task and give it your attention. You don't need to do everything at once.</p>
+      <div class="progress-row"><span>Today's task progress</span><span id="percent">0%</span></div>
+      <div class="bar"><span id="dailyBar" style="width:0%"></span></div>
+      <p class="muted">Tip: Break a big project into small steps.</p>
+    </div>
+  </section>
+</main>
+</div>
+
+<nav class="mobile-nav">
+  <button data-view="overview">⌂ Home</button>
+  <button data-view="tasks">☑ Tasks</button>
+  <button data-view="projects">▦ Projects</button>
+  <button data-view="notes">▤ Notes</button>
+</nav>
+
+<dialog id="taskDialog">
+  <form id="taskForm">
+    <h2>Add a Task</h2>
+    <label for="taskName">Task name</label>
+    <input id="taskName" maxlength="90" placeholder="Enter task name" required>
+    <label for="category">Category</label>
+    <select id="category">
+      <option>Personal</option>
+      <option>Work</option>
+      <option>Planning</option>
+      <option>Learning</option>
+    </select>
+    <div style="display:flex;justify-content:flex-end;gap:10px">
+      <button type="button" class="icon-btn" id="cancel">Cancel</button>
+      <button class="primary">Create Task</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const $ = id => document.getElementById(id);
+const KEY = "workspace-data-v1";
+const starterTasks = [
+  {id:1,name:"Plan the week ahead",category:"Planning",done:false},
+  {id:2,name:"Review project ideas",category:"Work",done:false},
+  {id:3,name:"Organise notes and resources",category:"Personal",done:true},
+  {id:4,name:"Set one goal for today",category:"Personal",done:false}
+];
+
+let data;
+try {
+  data = JSON.parse(localStorage.getItem(KEY)) ||
+    {tasks:starterTasks,notes:"",light:false};
+} catch {
+  data = {tasks:starterTasks,notes:"",light:false};
+}
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(data));
+}
+function safe(text){
+  return String(text).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function render(){
+  const query = $("search").value.toLowerCase().trim();
+  const list = data.tasks.filter(t=>
+    (t.name+" "+t.category).toLowerCase().includes(query)
+  );
+  $("tasks").innerHTML = list.length ? list.map(t=>`
+    <div class="task ${t.done?"done":""}" data-id="${t.id}">
+      <input type="checkbox" ${t.done?"checked":""} aria-label="Complete task">
+      <span class="task-name">${safe(t.name)}</span>
+      <span class="muted">${safe(t.category)}</span>
+      <button class="delete" aria-label="Delete task">×</button>
+    </div>
+  `).join("") : '<p class="muted">No tasks found.</p>';
+
+  document.querySelectorAll(".task").forEach(row=>{
+    const id = Number(row.dataset.id);
+    row.querySelector("input").addEventListener("change",e=>{
+      const task=data.tasks.find(t=>t.id===id);
+      if(task){task.done=e.target.checked;save();render();}
+    });
+    row.querySelector(".delete").addEventListener("click",()=>{
+      data.tasks=data.tasks.filter(t=>t.id!==id);
+      save();render();
+    });
+  });
+
+  const total=data.tasks.length;
+  const done=data.tasks.filter(t=>t.done).length;
+  const percent=total?Math.round(done/total*100):0;
+  $("total").textContent=total;
+  $("completed").textContent=done;
+  $("pending").textContent=total-done;
+  $("summary").textContent=done+" of "+total+" tasks completed";
+  $("percent").textContent=percent+"%";
+  $("dailyBar").style.width=percent+"%";
+}
+$("add").onclick=()=>$("taskDialog").showModal();
+$("cancel").onclick=()=>$("taskDialog").close();
+$("taskForm").onsubmit=e=>{
+  e.preventDefault();
+  const name=$("taskName").value.trim();
+  if(!name)return;
+  data.tasks.unshift({
+    id:Date.now(),
+    name,
+    category:$("category").value,
+    done:false
+  });
+  save();render();
+  $("taskForm").reset();
+  $("taskDialog").close();
+};
+$("search").addEventListener("input",render);
+$("notes").value=data.notes||"";
+$("notes").addEventListener("input",()=>{
+  data.notes=$("notes").value;
+  save();
+});
+function toggleTheme(){
+  data.light=!data.light;
+  document.body.classList.toggle("light",data.light);
+  $("theme").textContent=data.light?"☀":"◐";
+  save();
+}
+$("theme").onclick=toggleTheme;
+$("themeSide").onclick=toggleTheme;
+if(data.light)document.body.classList.add("light");
+
+document.querySelectorAll("[data-view]").forEach(button=>{
+  button.onclick=()=>{
+    const view=button.dataset.view;
+    const target={
+      overview:null,
+      tasks:"taskPanel",
+      projects:"projectPanel",
+      notes:"notePanel"
+    }[view];
+    if(target)$(target).scrollIntoView({behavior:"smooth",block:"center"});
+    else window.scrollTo({top:0,behavior:"smooth"});
+  };
+});
+
+const now=new Date();
+$("date").textContent=now.toLocaleDateString(undefined,{
+  weekday:"long",month:"short",day:"numeric",year:"numeric"
+});
+const hour=now.getHours();
+$("greeting").textContent=hour<12?"Good morning.":hour<18?"Good afternoon.":"Good evening.";
+
+render();
+</script>
+</body>
+</html>
